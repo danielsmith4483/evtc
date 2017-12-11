@@ -1,0 +1,22 @@
+{
+  "name": "evtc",
+  "version": "0.1.0",
+  "description": "An evtc parser for Guild Wars 2 logs.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielsmith4483/evtc.git"
+  },
+  "author": "Daniel Smith <danielsmith4483@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danielsmith4483/evtc/issues"
+  },
+  "homepage": "https://github.com/danielsmith4483/evtc#readme",
+  "dependencies": {
+    "smart-buffer": "^4.0.1"
+  }
+}
