@@ -58,4 +58,4 @@ typings/
 .env
 
 # nano swap files
-.swp
+*.swp

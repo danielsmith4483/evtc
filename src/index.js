@@ -4,6 +4,7 @@ const fs = require('fs');
 const SmarterBuffer = require('./smarter-buffer');;
 
 const Encounter = require('./encounter');
+const Agent = require('./agent');
 
 module.exports = function(filename) {
 	fs.readFile(filename, (err, data) => {
@@ -28,22 +29,15 @@ module.exports = function(filename) {
 		console.log(agentCount);
 
 		for (let i = 0; i < agentCount; i++) {
-			const agent = logBuffer.readUIntLE(8);
+			const agentId = logBuffer.readUIntLE(8);
 			const profession = logBuffer.readUIntLE(4);
 			const isElite = logBuffer.readUIntLE(4);
 			const toughness = logBuffer.readUIntLE(4);
 			const healing = logBuffer.readUIntLE(4);
 			const condition = logBuffer.readUIntLE(4);
-
 			const name = logBuffer.readString(68);
 
-			console.log(`agent: ${agent}`);
-//			console.log(`profession: ${profession}`);
-//			console.log(`isElite: ${isElite}`);
-//			console.log(`toughness: ${toughness}`);
-//			console.log(`healing: ${healing}`);
-//			console.log(`condition: ${condition}`);
-			console.log(name);
+			const agent = new Agent(agentId, profession, isElite, toughness, healing, condition, name);
 		}
 	});
 };
