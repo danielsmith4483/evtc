@@ -1,4 +1,6 @@
 'use strict';
+
+const Encounter = require('./encounter');
 const fs = require('fs');
 const SmartBuffer = require('smart-buffer').SmartBuffer;
 
@@ -13,10 +15,13 @@ module.exports = function(filename) {
 		const bossInstanceId = logBuffer.internalBuffer.readUIntLE(logBuffer.readOffset, 2);
 		logBuffer.readOffset += 2 + 1;
 
-		const playerCount = logBuffer.readUInt8();
+		const encounter = new Encounter(buildVersion, bossInstanceId);
 
-		console.log(buildVersion);
-		console.log(bossInstanceId);
-		console.log(playerCount);
+		const playerCount = logBuffer.internalBuffer.readUIntLE(logBuffer.readOffset, 4);
+		logBuffer.readOffset += 4;;
+
+		for (let i = 0; i < playerCount; i++) {
+
+		}
 	});
 };
