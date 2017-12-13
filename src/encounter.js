@@ -1,9 +1,10 @@
-const Squad = require('./squad');
+//const Agent = require('./agent');
 
 module.exports = class Encounter {
 	constructor(buildVersion, bossInstanceId) {
-		this.buildVersion = buildVersion
-		this.bossIntanceId = bossInstanceId
-		this.squad = new Squad()
+		this.buildVersion = buildVersion;
+		this.bossInstanceId = bossInstanceId;
+
+		
 	}
 }
