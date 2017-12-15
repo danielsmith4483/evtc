@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/danielsmith4483/evtc#readme",
   "dependencies": {
+    "gw2api-client": "^5.6.5",
     "smart-buffer": "^4.0.1"
   }
 }

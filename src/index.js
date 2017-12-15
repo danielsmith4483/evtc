@@ -4,9 +4,9 @@ const fs = require('fs');
 const SmarterBuffer = require('./smarter-buffer');;
 
 const Encounter = require('./encounter');
-const Agent = require('./agent');
+const AgentFactory = require('./agent/factory');
 
-module.exports = function(filename) {
+module.exports = async function(filename) {
 	fs.readFile(filename, (err, data) => {
 		if (err) throw err;
 
@@ -24,20 +24,16 @@ module.exports = function(filename) {
 
 		const agentCount = logBuffer.readUIntLE(4);
 
-		console.log(encounter.buildVersion);
-		console.log(encounter.bossInstanceId);
-		console.log(agentCount);
-
 		for (let i = 0; i < agentCount; i++) {
-			const agentId = logBuffer.readUIntLE(8);
-			const profession = logBuffer.readUIntLE(4);
-			const isElite = logBuffer.readUIntLE(4);
-			const toughness = logBuffer.readUIntLE(4);
-			const healing = logBuffer.readUIntLE(4);
-			const condition = logBuffer.readUIntLE(4);
-			const name = logBuffer.readString(68);
-
-			const agent = new Agent(agentId, profession, isElite, toughness, healing, condition, name);
+			const agent = await AgentFactory.create({
+				agentId: logBuffer.readUIntLE(8),
+				profession: logBuffer.readUIntLE(4),
+				isElite: logBuffer.readUIntLE(4),
+				toughness: logBuffer.readUIntLE(4),
+				healing: logBuffer.readUIntLE(4),
+				condition: logBuffer.readUIntLE(4),
+				name: logBuffer.readString(68)
+			});
 		}
 	});
 };

@@ -1,0 +1,15 @@
+const Agent = require('./agent');
+const Enum = require('enumify');
+
+class Profession extends Enum {}
+Color.initEnum(['
+
+const elite = Object.freeze({
+	0x5: "druid
+});
+
+module.exports = class PlayerAgent extends Agent {
+	constructor(properties) {
+		super(properties);
+	}
+}
