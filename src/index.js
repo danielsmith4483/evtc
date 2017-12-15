@@ -25,7 +25,7 @@ module.exports = async function(filename) {
 		const agentCount = logBuffer.readUIntLE(4);
 
 		for (let i = 0; i < agentCount; i++) {
-			const agent = await AgentFactory.create({
+			AgentFactory.create({
 				agentId: logBuffer.readUIntLE(8),
 				profession: logBuffer.readUIntLE(4),
 				isElite: logBuffer.readUIntLE(4),
@@ -33,7 +33,7 @@ module.exports = async function(filename) {
 				healing: logBuffer.readUIntLE(4),
 				condition: logBuffer.readUIntLE(4),
 				name: logBuffer.readString(68)
-			});
+			}).then(agent => {});
 		}
 	});
 };
