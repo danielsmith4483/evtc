@@ -32,8 +32,12 @@ module.exports = async function(filename) {
 				toughness: logBuffer.readUIntLE(4),
 				healing: logBuffer.readUIntLE(4),
 				condition: logBuffer.readUIntLE(4),
-				name: logBuffer.readString(68)
-			}).then(agent => {});
+				name: logBuffer.readString(68).trim()
+			}).then(agent => {
+				if (agent.isPlayer) {
+					// do something
+				}
+			}).catch(err => console.log(err));;
 		}
 	});
 };
