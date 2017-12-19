@@ -26,8 +26,10 @@ module.exports = async function(filename) {
 
 		const agentCount = logBuffer.readUIntLE(4);
 
+		const agents = [];
+
 		for (let i = 0; i < agentCount; i++) {
-			AgentFactory.create({
+			agents.push(AgentFactory.create({
 				agentId: logBuffer.readUIntLE(8),
 				profession: logBuffer.readUIntLE(4),
 				isElite: logBuffer.readUIntLE(4),
@@ -35,12 +37,12 @@ module.exports = async function(filename) {
 				healing: logBuffer.readUIntLE(4),
 				condition: logBuffer.readUIntLE(4),
 				name: logBuffer.readString(68)
-			}).then(agent => {
-				if (agent.isPlayer) {
-					encounter.squad.addPlayer(agent);
-				}
-			}).catch(err => console.log(err));
+			}));
 		}
+
+		Promise.all(agents).then(agents => {
+			agents.map(agent => agent.characterName && console.log(agent.characterName()));
+		}).catch(err => console.log(err));
 
 		const skillCount = logBuffer.readUIntLE(4);
 
