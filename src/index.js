@@ -37,7 +37,7 @@ module.exports = async function(filename) {
 				name: logBuffer.readString(68)
 			}).then(agent => {
 				if (agent.isPlayer) {
-					// do something
+					encounter.squad.addPlayer(agent);
 				}
 			}).catch(err => console.log(err));
 		}

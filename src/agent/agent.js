@@ -8,4 +8,8 @@ module.exports = class Agent {
 		this.condition = properties.condition;
 		this.name = properties.name;
 	}
+
+	dps() {
+		return 5;
+	}
 }
