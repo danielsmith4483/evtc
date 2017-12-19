@@ -24,4 +24,8 @@ module.exports = class SmarterBuffer extends SmartBuffer {
 		this.skip(numBytes);
 		return num;
 	}
+
+	readString(numBytes) {
+		return super.readString(numBytes).replace(/\0+$/, '');;
+	}
 }
