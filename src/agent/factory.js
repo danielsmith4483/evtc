@@ -9,7 +9,7 @@ module.exports = class AgentFactory {
 		if (properties.isElite != 0xffffffff) {
 			return api.specializations().get(properties.isElite)
 				.then(specialization => {
-					return new PlayerAgent(properties);
+					return new PlayerAgent(properties, specialization);
 				})
 				.catch(err => {
 					return new PlayerAgent(properties);
