@@ -4,7 +4,8 @@
   "description": "An evtc parser for Guild Wars 2 logs.",
   "main": "build/index.js",
   "scripts": {
-	"build": "babel ./src -d ./lib",
+    "build": "npm run lint && babel ./src -d ./lib",
+    "lint": "prettier-eslint \"src/**/*.js\"",
     "test": "mocha --reporter spec"
   },
   "repository": {
@@ -32,6 +33,10 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.1"
+    "babel-preset-env": "^1.6.1",
+    "eslint": "^4.13.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "prettier-eslint-cli": "^4.6.1"
   }
 }
