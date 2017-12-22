@@ -86,5 +86,7 @@ module.exports = async function(filename) {
 
       logBuffer.skip(3);
     }
+
+   	return encounter;
   });
 };

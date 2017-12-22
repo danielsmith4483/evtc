@@ -2,10 +2,11 @@
   "name": "evtc",
   "version": "0.1.0",
   "description": "An evtc parser for Guild Wars 2 logs.",
-  "main": "build/index.js",
+  "main": "src/index.js",
   "scripts": {
     "start": "cross-env NODE_PATH=src node program.js",
     "build": "npm run lint && babel ./src -d ./lib",
+    "prepare": "npm run build",
     "lint": "prettier-eslint '{**/*,*}.{js,json}' '!node_modules/**' '!lib/**'",
     "test": "cross-env NODE_PATH=src nyc mocha --require babel-core/register --require babel-polyfill"
   },
@@ -36,6 +37,7 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-es2015": "^6.24.1",
