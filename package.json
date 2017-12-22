@@ -7,7 +7,7 @@
     "start": "cross-env NODE_PATH=src node program.js",
     "build": "npm run lint && babel ./src -d ./lib",
     "lint": "prettier-eslint '{**/*,*}.{js,json}' '!node_modules/**' '!lib/**'",
-    "test": "cross-env NODE_PATH=src mocha --require babel-core/register"
+    "test": "cross-env NODE_PATH=src nyc mocha --require babel-core/register"
   },
   "repository": {
     "type": "git",
@@ -41,6 +41,7 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
     "mocha": "^4.0.1",
+    "nyc": "^11.4.1",
     "prettier-eslint-cli": "^4.6.1"
   }
 }
