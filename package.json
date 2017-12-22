@@ -4,6 +4,7 @@
   "description": "An evtc parser for Guild Wars 2 logs.",
   "main": "build/index.js",
   "scripts": {
+	"build": "babel ./src -d ./lib",
     "test": "mocha --reporter spec"
   },
   "repository": {
@@ -12,12 +13,12 @@
   },
   "keywords": [
     "evtc",
-	"gw2",
-	"log",
-	"Guild Wars 2",
-	"arc",
-	"arcdps",
-	"raids"
+    "gw2",
+    "log",
+    "Guild Wars 2",
+    "arc",
+    "arcdps",
+    "raids"
   ],
   "author": "Daniel Smith <danielsmith4483@gmail.com>",
   "license": "MIT",
@@ -28,5 +29,9 @@
   "dependencies": {
     "gw2api-client": "^5.6.5",
     "smart-buffer": "^4.0.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1"
   }
 }
