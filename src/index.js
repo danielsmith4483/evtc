@@ -8,11 +8,10 @@ const AgentFactory = require('./agent/factory');
 const SkillFactory = require('./skill/factory');
 const CombatEventFactory = require('./combat-event/factory');
 
-export async function fromFile(filename) {
-  fs.readFile(filename, (err, data) => {
-    if (err) throw err;
+const request = require('request').defaults({ encoding: null });
 
-    const logBuffer = SmarterBuffer.fromBuffer(data);
+async function parse(buffer) {
+    const logBuffer = SmarterBuffer.fromBuffer(buffer);
 
     const buildVersion = logBuffer.readString(12);
 
@@ -86,5 +85,17 @@ export async function fromFile(filename) {
 
       logBuffer.skip(3);
     }
+}
+
+export async function fromUrl(url) {
+  request.get(url, function(err, res, body) {
+    parse(body);
+  });
+};
+
+export async function fromFile(filename) {
+  fs.readFile(filename, (err, data) => {
+    if (err) throw err;
+    parse(data);
   });
 };
