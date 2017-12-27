@@ -28,4 +28,11 @@ module.exports = class SmarterBuffer extends SmartBuffer {
   readString(numBytes) {
     return super.readString(numBytes).replace(/\0+$/, '');;
   }
+
+  static fromBuffer(buff, encoding) {
+    return new SmarterBuffer({
+      buff: buff,
+      encoding: encoding
+    });
+  }
 }

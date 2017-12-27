@@ -8,7 +8,7 @@ const AgentFactory = require('./agent/factory');
 const SkillFactory = require('./skill/factory');
 const CombatEventFactory = require('./combat-event/factory');
 
-module.exports = async function(filename) {
+export async function fromFile(filename) {
   fs.readFile(filename, (err, data) => {
     if (err) throw err;
 
@@ -86,7 +86,5 @@ module.exports = async function(filename) {
 
       logBuffer.skip(3);
     }
-
-   	return encounter;
   });
 };
