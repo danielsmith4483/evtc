@@ -30,6 +30,7 @@
   },
   "homepage": "https://github.com/danielsmith4483/evtc#readme",
   "dependencies": {
+    "babel-runtime": "^6.26.0",
     "gw2api-client": "^5.6.5",
     "smart-buffer": "^4.0.1"
   },
@@ -40,6 +41,7 @@
     "babel-plugin-transform-class": "^0.3.0",
     "babel-plugin-transform-es2015-classes": "^6.24.1",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-es2015": "^6.24.1",
