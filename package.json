@@ -2,7 +2,7 @@
   "name": "evtc",
   "version": "0.1.0",
   "description": "An evtc parser for Guild Wars 2 logs.",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "start": "cross-env NODE_PATH=src node program.js",
     "build": "npm run lint && babel ./src -d ./lib",
