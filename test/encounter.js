@@ -19,25 +19,23 @@ describe("Encounter", () => {
       });
   });
 
-  describe("constructor", () => {
-    it("should initialize a log buffer", () => {
-      assert.instanceOf(encounter.logBuffer, SmarterBuffer);
-    });
+  it("should initialize a log buffer", () => {
+    assert.instanceOf(encounter.logBuffer, SmarterBuffer);
+  });
 
-    it("should return a valid build version", function(done) {
-      encounter
-        .buildVersion()
-        .then(buildVersion => {
-          assert.typeOf(buildVersion, "string");
-          assert.lengthOf(buildVersion, 12);
+  it("should return a valid build version", function(done) {
+    encounter
+      .buildVersion()
+      .then(buildVersion => {
+        assert.typeOf(buildVersion, "string");
+        assert.lengthOf(buildVersion, 12);
 
-          assert.equal(buildVersion.slice(0, 4), "EVTC");
+        assert.equal(buildVersion.slice(0, 4), "EVTC");
 
-          const buildDate = moment(buildVersion.slice(4), "YYYYMMDD");
-          assert.isNotNaN(buildDate);
-          done();
-        })
-        .catch(done);
-    });
+        const buildDate = moment(buildVersion.slice(4), "YYYYMMDD");
+        assert.isNotNaN(buildDate);
+        done();
+      })
+      .catch(done);
   });
 });

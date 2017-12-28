@@ -8,4 +8,12 @@ module.exports = class Encounter {
   async buildVersion() {
     return "";
   }
+
+  async bossInstanceId() {
+    return 0;
+  }
+
+  async bossKilled() {
+    return false;
+  }
 };

@@ -15,7 +15,7 @@ module.exports = class SmarterBuffer {
 
   readUIntLE(numBytes) {
     const num = this.smartBuffer.internalBuffer.readUIntLE(
-      this.readOffset,
+      this.smartBuffer.readOffset,
       numBytes
     );
     this.skip(numBytes);
