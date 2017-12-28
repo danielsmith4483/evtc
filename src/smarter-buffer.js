@@ -3,6 +3,26 @@ const SmartBuffer = require("smart-buffer").SmartBuffer;
 module.exports = class SmarterBuffer {
   constructor(buffer) {
     this.smartBuffer = SmartBuffer.fromBuffer(buffer);
+
+    const bookmarks = {};
+
+    this.setBookmark = function(key, offset = this.smartBuffer.readOffset) {
+      bookmarks[key] = offset;
+    };
+
+    this.getBookmark = function(key) {
+      if (!(key in bookmarks)) {
+        throw "Invalid bookmark";
+      }
+      return bookmarks[key];
+    };
+
+    this.useBookmark = function(key) {
+      if (!(key in bookmarks)) {
+        throw "Invalid bookmark";
+      }
+      this.smartBuffer.readOffset = bookmarks[key];
+    };
   }
 
   static fromBuffer(buffer) {

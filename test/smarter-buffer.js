@@ -81,17 +81,18 @@ describe("SmarterBuffer", () => {
       rawBuffer = new Buffer([1, 2, 3, 4, 5, 6, 7, 8]);
     });
 
-    it("should be able to create and retrieve bookmarks with a specified offset", () => {
+    it("should create and retrieve bookmarks with a specified offset", () => {
       buffer.setBookmark("newBookmark", 4);
       assert.equal(buffer.getBookmark("newBookmark"), 4);
     });
 
-    it("should be able to create and retrieve bookmarks at the current offset", () => {
+    it("should create and retrieve bookmarks at the current offset", () => {
+      const currentOffset = buffer.smartBuffer.readOffset;
       buffer.setBookmark("newBookmark");
       assert.equal(buffer.getBookmark("newBookmark"), currentOffset);
     });
 
-    it("should be able to jump to an offset given a bookmark", () => {
+    it("should jump to an offset given a bookmark", () => {
       const originalOffset = buffer.smartBuffer.readOffset;
       const n = 4;
 
@@ -99,11 +100,17 @@ describe("SmarterBuffer", () => {
       buffer.skip(n);
       buffer.setBookmark("secondBookmark");
 
-      buffer.setOffset("firstBookmark");
+      buffer.useBookmark("firstBookmark");
       assert.equal(buffer.smartBuffer.readOffset, originalOffset);
 
-      buffer.setOffset("secondBookmark");
+      buffer.useBookmark("secondBookmark");
       assert.equal(buffer.smartBuffer.readOffset, originalOffset + n);
+    });
+
+    it("should throw an error when retrieving nonexistent bookmarks", () => {
+      assert.throws(function() {
+        buffer.getBookmark("nonexistentBookmark");
+      });
     });
   });
 });
