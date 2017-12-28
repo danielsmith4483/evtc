@@ -8,14 +8,22 @@
     "build": "npm run lint && babel ./src -d ./lib",
     "prepare": "npm run build",
     "lint": "prettier-eslint '{**/*,*}.{js,json}' '!node_modules/**' '!lib/**'",
-    "test":
-      "cross-env NODE_PATH=src nyc mocha --require babel-core/register --require babel-polyfill"
+    "test": "cross-env NODE_PATH=src nyc mocha --require babel-core/register --require babel-polyfill"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/danielsmith4483/evtc.git"
   },
-  "keywords": ["evtc", "gw2", "log", "guild", "wars", "arc", "arcdps", "raids"],
+  "keywords": [
+    "evtc",
+    "gw2",
+    "log",
+    "guild",
+    "wars",
+    "arc",
+    "arcdps",
+    "raids"
+  ],
   "author": "Daniel Smith <danielsmith4483@gmail.com>",
   "license": "MIT",
   "bugs": {
@@ -24,6 +32,7 @@
   "homepage": "https://github.com/danielsmith4483/evtc#readme",
   "dependencies": {
     "babel-runtime": "^6.26.0",
+    "decompress": "^4.2.0",
     "gw2api-client": "^5.6.5",
     "request": "^2.83.0",
     "smart-buffer": "^4.0.1"
@@ -53,6 +62,9 @@
     "prettier-eslint-cli": "^4.6.1"
   },
   "nyc": {
-    "reporter": ["lcov", "text"]
+    "reporter": [
+      "lcov",
+      "text"
+    ]
   }
 }

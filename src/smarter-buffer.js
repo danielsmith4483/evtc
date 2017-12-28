@@ -1,4 +1,4 @@
-const SmartBuffer = require('smart-buffer').SmartBuffer;
+const SmartBuffer = require("smart-buffer").SmartBuffer;
 
 module.exports = class SmarterBuffer {
   constructor(buffer) {
@@ -14,12 +14,15 @@ module.exports = class SmarterBuffer {
   }
 
   readUIntLE(numBytes) {
-    const num = this.smartBuffer.internalBuffer.readUIntLE(this.readOffset, numBytes);
+    const num = this.smartBuffer.internalBuffer.readUIntLE(
+      this.readOffset,
+      numBytes
+    );
     this.skip(numBytes);
     return num;
   }
 
   readString(numBytes) {
-    return this.smartBuffer.readString(numBytes).replace(/\0+$/, '');;
+    return this.smartBuffer.readString(numBytes).replace(/\0+$/, "");
   }
-}
+};

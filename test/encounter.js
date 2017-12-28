@@ -1,21 +1,26 @@
-import { assert } from 'chai';
-import Encounter from 'encounter';
-import Squad from 'squad';
+import { assert } from "chai";
+import { fromFile } from "index";
+import Encounter from "encounter";
+import Squad from "squad";
+import SmarterBuffer from "smarter-buffer";
 
-describe('Encounter', () => {
-  describe('constructor', () => {
-    const buildVersion = "buildver";
-    const instanceId = 1;
+describe("Encounter", () => {
+  let encounter = null;
 
-    const encounter = new Encounter(buildVersion, instanceId);
-    it('should initialize build version', () => {
-      assert.equal(encounter.buildVersion, buildVersion);
-    });
-    it('should initilalize instance ID', () => {
-      assert.equal(encounter.bossInstanceId, instanceId);
-    });
-    it('should initialize the squad object', () => {
-      assert.instanceOf(encounter.squad, Squad);
+  before(function(done) {
+    fromFile("test/_evtc_files/20171211-230356.evtc.zip")
+      .then(e => {
+        encounter = e;
+        done();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  });
+
+  describe("constructor", () => {
+    it("should initialize a log buffer", () => {
+      assert.instanceOf(encounter.logBuffer, SmarterBuffer);
     });
   });
 });
