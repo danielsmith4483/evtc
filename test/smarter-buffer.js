@@ -75,4 +75,35 @@ describe("SmarterBuffer", () => {
       assert.equal(buffer.readString(50), "Hello World");
     });
   });
+
+  describe("Bookmarks", () => {
+    before(function() {
+      rawBuffer = new Buffer([1, 2, 3, 4, 5, 6, 7, 8]);
+    });
+
+    it("should be able to create and retrieve bookmarks with a specified offset", () => {
+      buffer.setBookmark("newBookmark", 4);
+      assert.equal(buffer.getBookmark("newBookmark"), 4);
+    });
+
+    it("should be able to create and retrieve bookmarks at the current offset", () => {
+      buffer.setBookmark("newBookmark");
+      assert.equal(buffer.getBookmark("newBookmark"), currentOffset);
+    });
+
+    it("should be able to jump to an offset given a bookmark", () => {
+      const originalOffset = buffer.smartBuffer.readOffset;
+      const n = 4;
+
+      buffer.setBookmark("firstBookmark");
+      buffer.skip(n);
+      buffer.setBookmark("secondBookmark");
+
+      buffer.setOffset("firstBookmark");
+      assert.equal(buffer.smartBuffer.readOffset, originalOffset);
+
+      buffer.setOffset("secondBookmark");
+      assert.equal(buffer.smartBuffer.readOffset, originalOffset + n);
+    });
+  });
 });
