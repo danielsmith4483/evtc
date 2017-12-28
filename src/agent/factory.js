@@ -1,6 +1,7 @@
-const Agent = require('./agent');
-const PlayerAgent = require('./player');
-const client = require('gw2api-client').default;
+import Agent from "agent/agent";
+import PlayerAgent from "agent/player";
+import BossAgent from "agent/boss";
+const client = require("gw2api-client").default;
 
 const api = client();
 
@@ -9,7 +10,9 @@ module.exports = class AgentFactory {
 
   static async create(properties) {
     if (properties.isElite != 0xffffffff) {
-      return api.specializations().get(properties.isElite)
+      return api
+        .specializations()
+        .get(properties.isElite)
         .then(specialization => {
           return new PlayerAgent(properties, specialization);
         })
@@ -20,4 +23,4 @@ module.exports = class AgentFactory {
       return new Agent(properties);
     }
   }
-}
+};
