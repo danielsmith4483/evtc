@@ -65,13 +65,46 @@ describe("Encounter", () => {
   });
 
   describe("Agents", () => {
-    it("should generate a list of agents", function(done) {
-      const agents = encounter.agents();
+    let agents = null;
 
-      let bossAgent = agents.next();
-      console.log(bossAgent);
-      bossAgent = agents.next();
-      console.log(bossAgent);
+    before(function(done) {
+      agents = encounter.agents();
+      done();
+    });
+
+    it("should generate a list of agents", function(done) {
+      let agentCount = 0;
+
+      for (const agent of agents) {
+        agentCount++;
+      }
+
+      assert.equal(agentCount, encounter.agentCount);
+      done();
+    });
+
+    it("should generate a single boss agent", function(done) {
+      let bossAgentCount = 0;
+      let agent = null;
+
+      do {
+        agent = agents.next("isBoss");
+      } while (!agent.done && bossAgentCount++);
+
+      assert.equal(bossAgentCount, 1);
+      done();
+    });
+
+    it("should generate 1 to 10 player agents", function(done) {
+      let playerAgentCount = 0;
+      let agent = null;
+
+      do {
+        agent = agents.next("isPlayer");
+      } while (!agent.done && playerAgentCount++);
+
+      assert.isAtLeast(playerAgentCount, 1);
+      assert.isAtMost(playerAgentCount, 10);
       done();
     });
   });
