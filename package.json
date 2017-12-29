@@ -1,6 +1,6 @@
 {
   "name": "evtc",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "An evtc parser for Guild Wars 2 logs.",
   "main": "lib/index.js",
   "scripts": {
