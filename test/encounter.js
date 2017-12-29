@@ -123,7 +123,15 @@ describe("Encounter", () => {
         .catch(done);
     });
 
-    it("should return encounter start time");
+    it("should return encounter start time", function(done) {
+      encounter.
+        startTime().then(startTime => {
+        assert.typeOf(startTime, "date");
+        assert(moment(startTime).isValid());
+        done();
+      })
+      .catch(done);
+    });
 
     it("should return encounter end time");
 

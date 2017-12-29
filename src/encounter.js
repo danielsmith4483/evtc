@@ -163,7 +163,7 @@ module.exports = class Encounter {
     });
   }
 
-  async combatEvents() {
+  async combatEvents(combatEventType) {
     if (!this.hasOwnProperty("_combatEvents")) {
       this._combatEvents = [];
       this.logBuffer.useBookmark(bookmarks.combatEvents.key);
@@ -204,8 +204,25 @@ module.exports = class Encounter {
       }
     }
     return Promise.all(combatEventPromises).then(() => {
+      if (combatEventType) {
+        return this._combatEvents.filter(combatEvent => {
+          return typeof combatEvent[combatEventType] === "function";
+        });
+      };
       return this._combatEvents;
     });
+  }
+
+  async startTime() {
+    if (!this.hasOwnProperty("_startTime")) {
+      return this.combatEvents("isStateChange").then(combatEvents => {
+        console.log(combatEvents);
+        const logStartEvent = combatEvents.find(e => {
+          e.isStateChange === StateChangeEvent.stateChangeEnum.logStart
+        });
+        console.log(logStartEvent);
+      });
+    }
   }
 
   async bossKilled() {
