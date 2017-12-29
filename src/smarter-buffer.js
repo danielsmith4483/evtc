@@ -45,4 +45,8 @@ module.exports = class SmarterBuffer {
   readString(numBytes) {
     return this.smartBuffer.readString(numBytes).replace(/\0+$/, "");
   }
+
+  remaining() {
+    return this.smartBuffer.remaining();
+   }
 };

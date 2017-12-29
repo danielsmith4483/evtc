@@ -52,22 +52,6 @@ describe("Encounter", () => {
         })
         .catch(done);
     });
-
-    it("should return a valid boss name", function(done) {
-      encounter
-        .bossName()
-        .then(bossName => {
-          assert.typeOf(bossName, "string");
-          done();
-        })
-        .catch(done);
-    });
-
-    it("should return encounter start time");
-
-    it("should return encounter end time");
-
-    it("should determine if the encounter was a success");
   });
 
   describe("Agents", () => {
@@ -102,17 +86,47 @@ describe("Encounter", () => {
         })
         .catch(done);
     });
+   
+   it("should return a valid boss name", function(done) {
+      encounter
+        .bossName()
+        .then(bossName => {
+          assert.typeOf(bossName, "string");
+          done();
+        })
+        .catch(done);
+    });
   });
 
   describe("Skills", () => {
     it("should generate a list of skills", function(done) {
-      assert.fail(0, 1);
+      encounter
+        .skills()
+        .then(skills => {
+          assert.typeOf(skills, "array");
+          assert.isAtLeast(skills.length, 1);
+          done();
+        })
+        .catch(done);
     });
   });
 
   describe("Combat Events", () => {
     it("should generate a list of combat events", function(done) {
-      assert.fail(0, 1);
+      encounter
+        .combatEvents()
+        .then(combatEvents => {
+          assert.typeOf(combatEvents, "array");
+          assert.isAtLeast(combatEvents.length, 1);
+          done();
+        })
+        .catch(done);
     });
+
+    it("should return encounter start time");
+
+    it("should return encounter end time");
+
+    it("should determine if the encounter was a success");
   });
 });

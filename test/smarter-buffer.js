@@ -33,6 +33,10 @@ describe("SmarterBuffer", () => {
 
       assert.increasesBy(fn, buffer.smartBuffer, "readOffset", n);
     });
+
+    it("should return the number of remaining bytes", () => {
+      assert.equal(buffer.remaining(), buffer.smartBuffer.remaining());
+    });
   });
 
   describe("readUIntLE", () => {
