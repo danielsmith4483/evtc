@@ -8,6 +8,10 @@ const api = client();
 module.exports = class AgentFactory {
   constructor() {}
 
+  static init(targetSpeciesId) {
+    AgentFactory.targetSpeciesId = targetSpeciesId;
+  }
+
   static async create(properties) {
     if (properties.isElite != 0xffffffff) {
       return api
@@ -19,6 +23,11 @@ module.exports = class AgentFactory {
         .catch(err => {
           return new PlayerAgent(properties);
         });
+    } else if (
+      AgentFactory.targetSpeciesId &&
+      AgentFactory.targetSpeciesId === properties.profession
+    ) {
+      return new BossAgent(properties);
     } else {
       return new Agent(properties);
     }

@@ -44,34 +44,40 @@ module.exports = class Encounter {
   async buildVersion() {
     if (!this.hasOwnProperty("buildVersion")) {
       this.logBuffer.useBookmark(bookmarks.buildVersion.key);
-      this.buildVersion = this.logBuffer.readString(
+      this._buildVersion = this.logBuffer.readString(
         bookmarks.buildVersion.bytes
       );
     }
 
-    return this.buildVersion;
+    return this._buildVersion;
   }
 
   async targetSpeciesId() {
     if (!this.hasOwnProperty("targetSpeciesId")) {
       this.logBuffer.useBookmark(bookmarks.targetSpeciesId.key);
-      this.targetSpeciesId = this.logBuffer.readUIntLE(
+      this._targetSpeciesId = this.logBuffer.readUIntLE(
         bookmarks.targetSpeciesId.bytes
       );
     }
 
-    return this.targetSpeciesId;
+    return this._targetSpeciesId;
   }
 
   async agents(agentType) {
-    if (!this.hasOwnProperty("agents")) {
-      this.agentList = [];
+    if (!AgentFactory.targetSpeciesId) {
+      const targetSpeciesId = await this.targetSpeciesId();
+
+      AgentFactory.init(targetSpeciesId);
+    }
+
+    if (!this.hasOwnProperty("agentList")) {
+      this._agents = [];
       this.logBuffer.useBookmark(bookmarks.agents.key);
     }
     const agentPromises = [];
 
     for (let i = 0; i < this.agentCount; i++) {
-      if (this.agentList.length <= i) {
+      if (this._agents.length <= i) {
         this.logBuffer.useBookmark(bookmarks.agents.key);
         this.logBuffer.skip(bookmarks.agents.bytes * i);
 
@@ -85,18 +91,21 @@ module.exports = class Encounter {
             condition: this.logBuffer.readUIntLE(4),
             name: this.logBuffer.readString(68)
           }).then(agent => {
-            this.agentList.push(agent);
+            this._agents.push(agent);
+            if (agent.name === "Mursaat Overseer") {
+              console.log(agent);
+            }
           })
         );
       }
     }
     return Promise.all(agentPromises).then(() => {
       if (agentType) {
-        return this.agentList.filter(agent => {
+        return this._agents.filter(agent => {
           return typeof agent[agentType] === "function";
         });
       }
-      return this.agentList;
+      return this._agents;
     });
   }
 
