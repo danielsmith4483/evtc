@@ -62,6 +62,12 @@ describe("Encounter", () => {
         })
         .catch(done);
     });
+
+    it("should return encounter start time");
+
+    it("should return encounter end time");
+
+    it("should determine if the encounter was a success");
   });
 
   describe("Agents", () => {
@@ -95,6 +101,18 @@ describe("Encounter", () => {
           done();
         })
         .catch(done);
+    });
+  });
+
+  describe("Skills", () => {
+    it("should generate a list of skills", function(done) {
+      assert.fail(0, 1);
+    });
+  });
+
+  describe("Combat Events", () => {
+    it("should generate a list of combat events", function(done) {
+      assert.fail(0, 1);
     });
   });
 });

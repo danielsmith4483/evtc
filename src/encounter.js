@@ -93,7 +93,6 @@ module.exports = class Encounter {
           }).then(agent => {
             this._agents.push(agent);
             if (agent.name === "Mursaat Overseer") {
-              console.log(agent);
             }
           })
         );
@@ -110,7 +109,9 @@ module.exports = class Encounter {
   }
 
   async bossName() {
-    return null;
+    return this.agents("isBoss").then(agents => {
+      return agents[0].name;
+    });
   }
 
   async bossKilled() {
