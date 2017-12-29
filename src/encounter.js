@@ -63,17 +63,19 @@ module.exports = class Encounter {
     return this.targetSpeciesId;
   }
 
-  *agents(agentType) {
+  async agents(agentType) {
     if (!this.hasOwnProperty("agents")) {
-      this.agents = [];
+      this.agentList = [];
       this.logBuffer.useBookmark(bookmarks.agents.key);
     }
+    const agentPromises = [];
+
     for (let i = 0; i < this.agentCount; i++) {
-      if (this.agents.length <= i) {
+      if (this.agentList.length <= i) {
         this.logBuffer.useBookmark(bookmarks.agents.key);
         this.logBuffer.skip(bookmarks.agents.bytes * i);
 
-        this.agents.push(
+        agentPromises.push(
           AgentFactory.create({
             agentId: this.logBuffer.readUIntLE(8),
             profession: this.logBuffer.readUIntLE(4),
@@ -82,18 +84,20 @@ module.exports = class Encounter {
             healing: this.logBuffer.readUIntLE(4),
             condition: this.logBuffer.readUIntLE(4),
             name: this.logBuffer.readString(68)
+          }).then(agent => {
+            this.agentList.push(agent);
           })
         );
       }
-
-      if (agentType) {
-        if (this.agents[i].hasOwnProperty(agentType)) {
-          yield this.agents[i];
-        }
-      } else {
-        yield this.agents[i];
-      }
     }
+    return Promise.all(agentPromises).then(() => {
+      if (agentType) {
+        return this.agentList.filter(agent => {
+          return typeof agent[agentType] === "function";
+        });
+      }
+      return this.agentList;
+    });
   }
 
   async bossName() {

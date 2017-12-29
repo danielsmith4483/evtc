@@ -65,47 +65,36 @@ describe("Encounter", () => {
   });
 
   describe("Agents", () => {
-    let agents = null;
-
-    before(function(done) {
-      agents = encounter.agents();
-      done();
-    });
-
     it("should generate a list of agents", function(done) {
-      let agentCount = 0;
-
-      for (const agent of agents) {
-        agentCount++;
-      }
-
-      assert.equal(agentCount, encounter.agentCount);
-      done();
+      encounter
+        .agents()
+        .then(agents => {
+          assert.typeOf(agents, "array");
+          assert.isAtLeast(agents.length, 1);
+          done();
+        })
+        .catch(done);
     });
 
     it("should generate a single boss agent", function(done) {
-      let bossAgentCount = 0;
-      let agent = null;
-
-      do {
-        agent = agents.next("isBoss");
-      } while (!agent.done && bossAgentCount++);
-
-      assert.equal(bossAgentCount, 1);
-      done();
+      encounter
+        .agents("isBoss")
+        .then(agents => {
+          assert.equal(agents.length, 1);
+          done();
+        })
+        .catch(done);
     });
 
     it("should generate 1 to 10 player agents", function(done) {
-      let playerAgentCount = 0;
-      let agent = null;
-
-      do {
-        agent = agents.next("isPlayer");
-      } while (!agent.done && playerAgentCount++);
-
-      assert.isAtLeast(playerAgentCount, 1);
-      assert.isAtMost(playerAgentCount, 10);
-      done();
+      encounter
+        .agents("isPlayer")
+        .then(agents => {
+          assert.isAtLeast(agents.length, 1);
+          assert.isAtMost(agents.length, 10);
+          done();
+        })
+        .catch(done);
     });
   });
 });
