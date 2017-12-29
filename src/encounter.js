@@ -169,7 +169,6 @@ module.exports = class Encounter {
       this.logBuffer.useBookmark(bookmarks.combatEvents.key);
     }
     const combatEventPromises = [];
-    console.log(this.combatEventCount);
 
     for (let i = 0; i < this.combatEventCount; i++) {
       if (this._combatEvents.length <= i) {
@@ -188,11 +187,7 @@ module.exports = class Encounter {
             srcInstId: this.logBuffer.readUIntLE(2),
             dstInstId: this.logBuffer.readUIntLE(2),
             srcMasterInstId: this.logBuffer.readUIntLE(2),
-            iff: (function() {
-              return 0x1; // TODO: fix
-              this.logBuffer.skip(9);
-              return this.logBuffer.readUIntLE(1);
-            })(),
+            ff: this.logBuffer.skip(9).readUIntLE(1),
             buff: this.logBuffer.readUIntLE(1),
             result: this.logBuffer.readUIntLE(1),
             isActivation: this.logBuffer.readUIntLE(1),

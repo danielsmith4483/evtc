@@ -34,6 +34,11 @@ describe("SmarterBuffer", () => {
       assert.increasesBy(fn, buffer.smartBuffer, "readOffset", n);
     });
 
+    it("skip(n) is chainable", () => {
+      assert.strictEqual(buffer, buffer.skip(1));
+      assert.strictEqual(buffer, buffer.skip(1).skip(1));
+    });
+
     it("should return the number of remaining bytes", () => {
       assert.equal(buffer.remaining(), buffer.smartBuffer.remaining());
     });

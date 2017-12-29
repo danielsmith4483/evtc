@@ -31,6 +31,7 @@ module.exports = class SmarterBuffer {
 
   skip(numBytes) {
     this.smartBuffer.readOffset += numBytes;
+    return this;
   }
 
   readUIntLE(numBytes) {
