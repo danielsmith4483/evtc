@@ -2,6 +2,9 @@ const Squad = require("./squad");
 import AgentFactory from "agent/factory";
 import SkillFactory from "skill/factory";
 import CombatEventFactory from "combat-event/factory";
+import StateChangeEvent from "combat-event/state-change";
+
+import moment from "moment";
 
 const bookmarks = {
   buildVersion: {
@@ -62,7 +65,8 @@ module.exports = class Encounter {
 
     this.logBuffer.setBookmark(bookmarks.combatEvents.key);
 
-    this.combatEventCount = this.logBuffer.remaining() / bookmarks.combatEvents.bytes;
+    this.combatEventCount =
+      this.logBuffer.remaining() / bookmarks.combatEvents.bytes;
   }
 
   async buildVersion() {
@@ -123,7 +127,7 @@ module.exports = class Encounter {
     return Promise.all(agentPromises).then(() => {
       if (agentType) {
         return this._agents.filter(agent => {
-          return typeof agent[agentType] === "function";
+          return agent[agentType];
         });
       }
       return this._agents;
@@ -206,9 +210,9 @@ module.exports = class Encounter {
     return Promise.all(combatEventPromises).then(() => {
       if (combatEventType) {
         return this._combatEvents.filter(combatEvent => {
-          return typeof combatEvent[combatEventType] === "function";
+          return combatEvent[combatEventType];
         });
-      };
+      }
       return this._combatEvents;
     });
   }
@@ -216,13 +220,15 @@ module.exports = class Encounter {
   async startTime() {
     if (!this.hasOwnProperty("_startTime")) {
       return this.combatEvents("isStateChange").then(combatEvents => {
-        console.log(combatEvents);
         const logStartEvent = combatEvents.find(e => {
-          e.isStateChange === StateChangeEvent.stateChangeEnum.logStart
+          return e.isStateChange === StateChangeEvent.stateChangeEnum.logStart;
         });
-        console.log(logStartEvent);
+
+        this._startTime = moment.unix(logStartEvent.value);
+        return this._startTime;
       });
     }
+    return this._startTime;
   }
 
   async bossKilled() {

@@ -1,4 +1,4 @@
-const CombatEvent = require('./combat-event');
+const CombatEvent = require("./combat-event");
 
 module.exports = class StateChangeEvent extends CombatEvent {
   static get stateChangeEnum() {
@@ -21,14 +21,15 @@ module.exports = class StateChangeEvent extends CombatEvent {
       gwBuild: 15,
       shardId: 16,
       reward: 17
-    }
+    };
   }
 
   constructor(properties) {
     super(properties);
-  }
 
-  isStateChange() {
-    return true;
+    this.srcAgent = properties.srcAgent;
+    this.value = properties.value;
+    this.buffDamage = properties.buffDamage;
+    this.isStateChange = properties.isStateChange;
   }
-}
+};

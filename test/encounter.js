@@ -86,8 +86,8 @@ describe("Encounter", () => {
         })
         .catch(done);
     });
-   
-   it("should return a valid boss name", function(done) {
+
+    it("should return a valid boss name", function(done) {
       encounter
         .bossName()
         .then(bossName => {
@@ -124,13 +124,14 @@ describe("Encounter", () => {
     });
 
     it("should return encounter start time", function(done) {
-      encounter.
-        startTime().then(startTime => {
-        assert.typeOf(startTime, "date");
-        assert(moment(startTime).isValid());
-        done();
-      })
-      .catch(done);
+      encounter
+        .startTime()
+        .then(startTime => {
+          assert(moment.isMoment(startTime));
+          assert(startTime.isValid());
+          done();
+        })
+        .catch(done);
     });
 
     it("should return encounter end time");
