@@ -1,4 +1,4 @@
-const Agent = require('./agent');
+const Agent = require("./agent");
 
 module.exports = class PlayerAgent extends Agent {
   constructor(properties) {
@@ -24,4 +24,4 @@ module.exports = class PlayerAgent extends Agent {
   subgroup() {
     return this.nameComponents()[2];
   }
-}
+};

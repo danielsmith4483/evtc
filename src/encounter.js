@@ -135,9 +135,17 @@ module.exports = class Encounter {
   }
 
   async boss() {
-    return this.agents("isBoss").then(agents => {
-      return agents[0];
-    });
+    if (!this.hasOwnProperty("_boss")) {
+      return this.agents("isBoss").then(agents => {
+        this._boss = agents[0];
+        return this._boss;
+      });
+    }
+    return this._boss;
+  }
+
+  async squad() {
+    return this._squad;
   }
 
   async skills() {

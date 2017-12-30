@@ -90,11 +90,21 @@ describe("Encounter", () => {
         .catch(done);
     });
 
-    it("should return a valid boss name", function(done) {
+    it("should return a valid BossAgent instance", function(done) {
       encounter
         .boss()
         .then(boss => {
           assert.instanceOf(boss, BossAgent);
+          done();
+        })
+        .catch(done);
+    });
+
+    it("should return a valid Squad instance", function(done) {
+      encounter
+        .squad()
+        .then(squad => {
+          assert.instanceOf(squad, Squad);
           done();
         })
         .catch(done);

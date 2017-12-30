@@ -1,17 +1,22 @@
-const Subgroup = require('./subgroup');
+const Subgroup = require("./subgroup");
 
 module.exports = class Squad {
-  constructor() {
-    this.subgroups = [];
+  constructor(players) {
+    this._subgroups = players.reduce((subgroups, player) => {
+      (subgroups[player.subgroup()] = subgroups[player.subgroup()] || []).push(
+        player
+      );
+      return subgroups;
+    }, {});
+
+    Object.entries(this._subgroups).forEach(([subgroup, players]) => {
+      console.log(subgroup);
+      console.log(players);
+    });
   }
 
-  addPlayer(player) {
-    const subgroup = player.subgroup() - 1;
-    if (!this.subgroups[subgroup]) {
-      this.subgroups[subgroup] = new Subgroup(player);
-    } else {
-      this.subgroups[subgroup].addPlayer(player);;
-    }
+  *players() {
+    Object.entries(this._subgroups).forEach(([subgroup, players]) => {});
   }
 
   dps() {
@@ -20,4 +25,4 @@ module.exports = class Squad {
     }
     return this.subgroups.reduce((acc, cur) => acc + cur.dps(), 0);
   }
-}
+};
