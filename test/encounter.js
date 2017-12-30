@@ -1,9 +1,12 @@
-import { assert } from "chai";
+import chai, { assert } from "chai";
 import { fromFile } from "index";
 import { Encounter } from "encounter";
 import Squad from "squad";
+import BossAgent from "agent/boss";
 import SmarterBuffer from "smarter-buffer";
 import moment from "moment";
+
+chai.use(require("chai-moment"));
 
 describe("Encounter", () => {
   let encounter = null;
@@ -89,9 +92,9 @@ describe("Encounter", () => {
 
     it("should return a valid boss name", function(done) {
       encounter
-        .bossName()
-        .then(bossName => {
-          assert.typeOf(bossName, "string");
+        .boss()
+        .then(boss => {
+          assert.instanceOf(boss, BossAgent);
           done();
         })
         .catch(done);
@@ -134,8 +137,30 @@ describe("Encounter", () => {
         .catch(done);
     });
 
-    it("should return encounter end time");
+    it("should return encounter end time", function(done) {
+      encounter
+        .endTime()
+        .then(endTime => {
+          assert(moment.isMoment(endTime));
+          assert(endTime.isValid());
+          assert(endTime);
+          done();
+        })
+        .catch(done);
+    });
 
-    it("should determine if the encounter was a success");
+    it("should have a positive, nonzero encounter duration", function(done) {
+      Promise.all([encounter.startTime(), encounter.endTime()]).then(times => {
+        assert.beforeMoment(times[0], times[1]);
+        done();
+      });
+    });
+
+    it("should determine if the encounter was a success", function(done) {
+      encounter.bossKilled().then(bossKilled => {
+        assert.typeOf(bossKilled, "boolean"); //TODO: smarter check
+        done();
+      });
+    });
   });
 });

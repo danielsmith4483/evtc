@@ -134,9 +134,9 @@ module.exports = class Encounter {
     });
   }
 
-  async bossName() {
+  async boss() {
     return this.agents("isBoss").then(agents => {
-      return agents[0].name;
+      return agents[0];
     });
   }
 
@@ -231,7 +231,32 @@ module.exports = class Encounter {
     return this._startTime;
   }
 
+  async endTime() {
+    if (!this.hasOwnProperty("_endTime")) {
+      return this.combatEvents("isStateChange").then(combatEvents => {
+        const logEndEvent = combatEvents.find(e => {
+          return e.isStateChange === StateChangeEvent.stateChangeEnum.logEnd;
+        });
+
+        this._endTime = moment.unix(logEndEvent.value);
+        return this._endTime;
+      });
+    }
+    return this._endTime;
+  }
+
   async bossKilled() {
-    return false;
+    if (!this.hasOwnProperty("_bossKilled")) {
+      return this.combatEvents("isStateChange").then(combatEvents => {
+        return this.boss().then(boss => {
+          const bossKilled = combatEvents.some(combatEvent => {
+            return boss.agentId === combatEvent.srcAgent;
+          });
+          this._bossKilled = bossKilled;
+          return bossKilled;
+        });
+      });
+    }
+    return this._bossKilled;
   }
 };
