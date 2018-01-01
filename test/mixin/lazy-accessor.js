@@ -6,11 +6,9 @@ describe.only("Lazy Accessor", () => {
 
   let Subclass = class Subclass extends mix(Base).with(LazyAccessorMixin) {
     async hello() {
-      const getAsync = this.getAsync(() => {
+      return this.getAsync("hello", () => {
         return "hello world";
-      });
-
-      return getAsync("hello").then(hello => {
+      }).then(hello => {
         return hello;
       });
     }
