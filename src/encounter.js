@@ -145,6 +145,12 @@ module.exports = class Encounter {
   }
 
   async squad() {
+    if (!this.hasOwnProperty("_squad")) {
+      return this.agents("isPlayer").then(players => {
+        this._squad = new Squad(players);
+        return this._squad;
+      });
+    }
     return this._squad;
   }
 

@@ -6,17 +6,27 @@ module.exports = class Squad {
       (subgroups[player.subgroup()] = subgroups[player.subgroup()] || []).push(
         player
       );
+
       return subgroups;
     }, {});
 
     Object.entries(this._subgroups).forEach(([subgroup, players]) => {
-      console.log(subgroup);
-      console.log(players);
+      this._subgroups[subgroup] = new Subgroup(players);
     });
   }
 
+  *subgroups() {
+    for (const subgroupNum in this._subgroups) {
+      yield this._subgroups[subgroupNum];
+    }
+  }
+
   *players() {
-    Object.entries(this._subgroups).forEach(([subgroup, players]) => {});
+    for (const subgroup of this.subgroups) {
+      for (const player of subgroup.players) {
+        yield player;
+      }
+    }
   }
 
   dps() {

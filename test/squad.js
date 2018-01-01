@@ -38,7 +38,21 @@ describe("Squad", () => {
     });
   });
 
+  it("should provide a generator of all subgroups", function(done) {
+    assert.fail(0, 1);
+
+    const squad = new Squad(players);
+
+    for (const subgroup of squad.subgroups) {
+      assert.instanceOf(subgroup, Subgroup);
+    }
+
+    done();
+  });
+
   it("should provide a generator of all players", function(done) {
+    assert.fail(0, 1);
+
     const squad = new Squad(players);
 
     let playerCount = 0;
@@ -49,5 +63,7 @@ describe("Squad", () => {
     }
 
     assert.equal(players.length, playerCount);
+
+    done();
   });
 });
