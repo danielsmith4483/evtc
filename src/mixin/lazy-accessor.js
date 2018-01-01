@@ -2,16 +2,18 @@ import { mix } from "mixin/mixin";
 
 let LazyAccessorMixin = superclass =>
   class extends superclass {
-    async getAsync(curry) {
-      return (propertyName => {
-        const propertyKey = `_${propertyName}`;
+    getAsync(curry) {
+      return propertyName => {
+        return new Promise((resolve, reject) => {
+          const propertyKey = `_${propertyName}`;
 
-        if (!this.hasOwnProperty(propertyKey)) {
-          const propertyValue = curry();
-          this[propertyKey] = propertyValue;
-        }
-        return this[propertyKey];
-      })();
+          if (!this.hasOwnProperty(propertyKey)) {
+            const propertyValue = curry();
+            this[propertyKey] = propertyValue;
+          }
+          resolve(this[propertyKey]);
+        });
+      };
     }
   };
 

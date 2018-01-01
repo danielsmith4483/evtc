@@ -7,14 +7,10 @@ describe.only("Lazy Accessor", () => {
   let Subclass = class Subclass extends mix(Base).with(LazyAccessorMixin) {
     async hello() {
       const getAsync = this.getAsync(() => {
-        let value = null;
-        for (let i = 0; i < 100000; i++) {
-          value = "hello world";
-        }
-        return value;
+        return "hello world";
       });
 
-      return getAsync.then(hello => {
+      return getAsync("hello").then(hello => {
         return hello;
       });
     }
@@ -35,6 +31,25 @@ describe.only("Lazy Accessor", () => {
       .then(hello => {
         assert.equal(hello, "hello world");
         done();
+      })
+      .catch(done);
+  });
+
+  it("should not recompute a property after first retrieval", function(done) {
+    subclass
+      .hello()
+      .then(hello => {
+        assert.equal(hello, "hello world");
+
+        subclass._hello = "new value";
+
+        subclass
+          .hello()
+          .then(hello => {
+            assert.equal(hello, "new value");
+            done();
+          })
+          .catch(done);
       })
       .catch(done);
   });
