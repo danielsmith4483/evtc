@@ -1,7 +1,7 @@
 let mix = superclass => new MixinBuilder(superclass);
 
 class MixinBuilder {
-  constructor(superclass) {
+  constructor(superclass = class {}) {
     this.superclass = superclass;
   }
 

@@ -9,7 +9,7 @@ describe("MixinBuilder", () => {
   let b = null;
 
   before(function() {
-    let A = class A {
+    A = class A {
       foo() {
         return "foo";
       }
@@ -27,7 +27,7 @@ describe("MixinBuilder", () => {
       }
     };
 
-    let M1 = superclass =>
+    M1 = superclass =>
       class extends superclass {
         foo2() {
           return "foo2";
@@ -42,7 +42,7 @@ describe("MixinBuilder", () => {
         }
       };
 
-    let M2 = superclass =>
+    M2 = superclass =>
       class extends superclass {
         bar() {
           return "baz";
@@ -57,7 +57,7 @@ describe("MixinBuilder", () => {
         }
       };
 
-    let B = class B extends mix(A).with(M1, M2) {
+    B = class B extends mix(A).with(M1, M2) {
       foo3() {
         return "foo3";
       }
@@ -72,6 +72,14 @@ describe("MixinBuilder", () => {
     };
 
     b = new B();
+  });
+
+  it("should work with no base class defined", function() {
+    let C = class C extends mix().with(M1) {};
+
+    const c = new C();
+
+    assert.equal(c.foo2(), "foo2");
   });
 
   it("should retain its original properties", function() {

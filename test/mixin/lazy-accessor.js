@@ -1,7 +1,7 @@
 import { assert } from "chai";
 import { mix, LazyAccessorMixin } from "mixin/lazy-accessor";
 
-describe.only("Lazy Accessor", () => {
+describe("Lazy Accessor", () => {
   let Base = class Base {};
 
   let Subclass = class Subclass extends mix(Base).with(LazyAccessorMixin) {

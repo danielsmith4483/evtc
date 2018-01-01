@@ -1,4 +1,7 @@
 const Squad = require("./squad");
+
+import { mix, LazyAccessorMixin } from "mixin/lazy-accessor";
+
 import AgentFactory from "agent/factory";
 import SkillFactory from "skill/factory";
 import CombatEventFactory from "combat-event/factory";
@@ -37,8 +40,10 @@ const bookmarks = {
   }
 };
 
-module.exports = class Encounter {
+module.exports = class Encounter extends mix().with(LazyAccessorMixin) {
   constructor(logBuffer) {
+    super(logBuffer);
+
     this.logBuffer = logBuffer;
 
     this.logBuffer.setBookmark(bookmarks.buildVersion.key);
@@ -70,25 +75,17 @@ module.exports = class Encounter {
   }
 
   async buildVersion() {
-    if (!this.hasOwnProperty("buildVersion")) {
+    return this.getAsync("buildVersion", () => {
       this.logBuffer.useBookmark(bookmarks.buildVersion.key);
-      this._buildVersion = this.logBuffer.readString(
-        bookmarks.buildVersion.bytes
-      );
-    }
-
-    return this._buildVersion;
+      return this.logBuffer.readString(bookmarks.buildVersion.bytes);
+    }).then(buildVersion => buildVersion);
   }
 
   async targetSpeciesId() {
-    if (!this.hasOwnProperty("targetSpeciesId")) {
+    return this.getAsync("targetSpeciesId", () => {
       this.logBuffer.useBookmark(bookmarks.targetSpeciesId.key);
-      this._targetSpeciesId = this.logBuffer.readUIntLE(
-        bookmarks.targetSpeciesId.bytes
-      );
-    }
-
-    return this._targetSpeciesId;
+      return this.logBuffer.readUIntLE(bookmarks.targetSpeciesId.bytes);
+    }).then(targetSpeciesId => targetSpeciesId);
   }
 
   async agents(agentType) {
@@ -135,23 +132,15 @@ module.exports = class Encounter {
   }
 
   async boss() {
-    if (!this.hasOwnProperty("_boss")) {
-      return this.agents("isBoss").then(agents => {
-        this._boss = agents[0];
-        return this._boss;
-      });
-    }
-    return this._boss;
+    return this.getAsync("boss", () => {
+      return this.agents("isBoss").then(agents => agents[0]);
+    }).then(boss => boss);
   }
 
   async squad() {
-    if (!this.hasOwnProperty("_squad")) {
-      return this.agents("isPlayer").then(players => {
-        this._squad = new Squad(players);
-        return this._squad;
-      });
-    }
-    return this._squad;
+    return this.getAsync("squad", () => {
+      return this.agents("isPlayer").then(players => new Squad(players));
+    }).then(squad => squad);
   }
 
   async skills() {
@@ -232,45 +221,36 @@ module.exports = class Encounter {
   }
 
   async startTime() {
-    if (!this.hasOwnProperty("_startTime")) {
+    return this.getAsync("startTime", () => {
       return this.combatEvents("isStateChange").then(combatEvents => {
         const logStartEvent = combatEvents.find(e => {
           return e.isStateChange === StateChangeEvent.stateChangeEnum.logStart;
         });
-
-        this._startTime = moment.unix(logStartEvent.value);
-        return this._startTime;
+        return moment.unix(logStartEvent.value);
       });
-    }
-    return this._startTime;
+    }).then(startTime => startTime);
   }
 
   async endTime() {
-    if (!this.hasOwnProperty("_endTime")) {
+    return this.getAsync("endTime", () => {
       return this.combatEvents("isStateChange").then(combatEvents => {
         const logEndEvent = combatEvents.find(e => {
           return e.isStateChange === StateChangeEvent.stateChangeEnum.logEnd;
         });
-
-        this._endTime = moment.unix(logEndEvent.value);
-        return this._endTime;
+        return moment.unix(logEndEvent.value);
       });
-    }
-    return this._endTime;
+    }).then(endTime => endTime);
   }
 
   async bossKilled() {
-    if (!this.hasOwnProperty("_bossKilled")) {
+    return this.getAsync("bossKilled", () => {
       return this.combatEvents("isStateChange").then(combatEvents => {
         return this.boss().then(boss => {
-          const bossKilled = combatEvents.some(combatEvent => {
+          return combatEvents.some(combatEvent => {
             return boss.agentId === combatEvent.srcAgent;
           });
-          this._bossKilled = bossKilled;
-          return bossKilled;
         });
       });
-    }
-    return this._bossKilled;
+    }).then(bossKilled => bossKilled);
   }
 };
