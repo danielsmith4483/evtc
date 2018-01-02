@@ -89,45 +89,38 @@ module.exports = class Encounter extends mix().with(LazyAccessorMixin) {
   }
 
   async agents(agentType) {
-    if (!AgentFactory.targetSpeciesId) {
-      const targetSpeciesId = await this.targetSpeciesId();
+    return this.getAsync("agents", () => {
+      return this.targetSpeciesId().then(targetSpeciesId => {
+        AgentFactory.init(targetSpeciesId);
 
-      AgentFactory.init(targetSpeciesId);
-    }
-
-    if (!this.hasOwnProperty("_agents")) {
-      this._agents = [];
-      this.logBuffer.useBookmark(bookmarks.agents.key);
-    }
-    const agentPromises = [];
-
-    for (let i = 0; i < this.agentCount; i++) {
-      if (this._agents.length <= i) {
         this.logBuffer.useBookmark(bookmarks.agents.key);
-        this.logBuffer.skip(bookmarks.agents.bytes * i);
 
-        agentPromises.push(
-          AgentFactory.create({
-            agentId: this.logBuffer.readUIntLE(8),
-            profession: this.logBuffer.readUIntLE(4),
-            isElite: this.logBuffer.readUIntLE(4),
-            toughness: this.logBuffer.readUIntLE(4),
-            healing: this.logBuffer.readUIntLE(4),
-            condition: this.logBuffer.readUIntLE(4),
-            name: this.logBuffer.readString(68)
-          }).then(agent => {
-            this._agents.push(agent);
-          })
-        );
-      }
-    }
-    return Promise.all(agentPromises).then(() => {
+        const agentPromises = [];
+
+        for (let i = 0; i < this.agentCount; i++) {
+          this.logBuffer.useBookmark(bookmarks.agents.key);
+          this.logBuffer.skip(bookmarks.agents.bytes * i);
+
+          agentPromises.push(
+            AgentFactory.create({
+              agentId: this.logBuffer.readUIntLE(8),
+              profession: this.logBuffer.readUIntLE(4),
+              isElite: this.logBuffer.readUIntLE(4),
+              toughness: this.logBuffer.readUIntLE(4),
+              healing: this.logBuffer.readUIntLE(4),
+              condition: this.logBuffer.readUIntLE(4),
+              name: this.logBuffer.readString(68)
+            })
+          );
+        }
+
+        return Promise.all(agentPromises);
+      });
+    }).then(agents => {
       if (agentType) {
-        return this._agents.filter(agent => {
-          return agent[agentType];
-        });
+        return agents.filter(agent => agent[agentType]);
       }
-      return this._agents;
+      return agents;
     });
   }
 
@@ -144,14 +137,12 @@ module.exports = class Encounter extends mix().with(LazyAccessorMixin) {
   }
 
   async skills() {
-    if (!this.hasOwnProperty("_skills")) {
-      this._skills = [];
+    return this.getAsync("skills", () => {
       this.logBuffer.useBookmark(bookmarks.skills.key);
-    }
-    const skillPromises = [];
 
-    for (let i = 0; i < this.skillCount; i++) {
-      if (this._skills.length <= i) {
+      const skillPromises = [];
+
+      for (let i = 0; i < this.skillCount; i++) {
         this.logBuffer.useBookmark(bookmarks.skills.key);
         this.logBuffer.skip(bookmarks.skills.bytes * i);
 
@@ -159,26 +150,20 @@ module.exports = class Encounter extends mix().with(LazyAccessorMixin) {
           SkillFactory.create({
             skillId: this.logBuffer.readUIntLE(4),
             name: this.logBuffer.readString(64)
-          }).then(skill => {
-            this._skills.push(skill);
           })
         );
       }
-    }
-    return Promise.all(skillPromises).then(() => {
-      return this._skills;
-    });
+      return Promise.all(skillPromises);
+    }).then(skills => skills);
   }
 
   async combatEvents(combatEventType) {
-    if (!this.hasOwnProperty("_combatEvents")) {
-      this._combatEvents = [];
+    return this.getAsync("combatEvents", () => {
       this.logBuffer.useBookmark(bookmarks.combatEvents.key);
-    }
-    const combatEventPromises = [];
 
-    for (let i = 0; i < this.combatEventCount; i++) {
-      if (this._combatEvents.length <= i) {
+      const combatEventPromises = [];
+
+      for (let i = 0; i < this.combatEventCount; i++) {
         this.logBuffer.useBookmark(bookmarks.combatEvents.key);
         this.logBuffer.skip(bookmarks.combatEvents.bytes * i);
 
@@ -204,19 +189,15 @@ module.exports = class Encounter extends mix().with(LazyAccessorMixin) {
             isMoving: this.logBuffer.readUIntLE(1),
             isStateChange: this.logBuffer.readUIntLE(1),
             isFlanking: this.logBuffer.readUIntLE(1)
-          }).then(combatEvent => {
-            this._combatEvents.push(combatEvent);
           })
         );
       }
-    }
-    return Promise.all(combatEventPromises).then(() => {
+      return Promise.all(combatEventPromises);
+    }).then(combatEvents => {
       if (combatEventType) {
-        return this._combatEvents.filter(combatEvent => {
-          return combatEvent[combatEventType];
-        });
+        return combatEvents.filter(combatEvent => combatEvent[combatEventType]);
       }
-      return this._combatEvents;
+      return combatEvents;
     });
   }
 
