@@ -1,6 +1,6 @@
-import Agent from "./agent";
-import PlayerAgent from "./player";
-import BossAgent from "./boss";
+import Agent from "agent/agent";
+import PlayerAgent from "agent/player";
+import BossAgent from "agent/boss";
 const client = require("gw2api-client").default;
 
 const api = client();
