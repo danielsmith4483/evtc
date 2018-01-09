@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "start": "cross-env NODE_PATH=src babel-node --presets es2016 program.js",
-    "build": "cross-env NODE_PATH=src npm run lint && babel ./src -d ./lib",
+    "build": "npm run lint && babel ./src -d ./lib",
     "prepare": "npm run build",
     "lint": "prettier-eslint '{**/*,*}.{js,json}' '!node_modules/**' '!lib/**'",
     "test": "cross-env NODE_PATH=src nyc mocha --require babel-core/register --require babel-polyfill --recursive"
@@ -42,6 +42,7 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
+    "babel-plugin-module-resolver": "^3.0.0",
     "babel-plugin-transform-class": "^0.3.0",
     "babel-plugin-transform-es2015-classes": "^6.24.1",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",

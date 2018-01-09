@@ -1,4 +1,4 @@
 {
   "presets": ["env", "es2015", "stage-0"],
-  "plugins": ["transform-es2015-modules-commonjs", "transform-runtime"]
+  "plugins": ["transform-es2015-modules-commonjs", "transform-runtime", ["module-resolver", {"root": ["./src"]}]]
 }
