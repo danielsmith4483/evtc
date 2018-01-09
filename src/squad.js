@@ -15,10 +15,8 @@ module.exports = class Squad {
     });
   }
 
-  *subgroups() {
-    for (const subgroupNum in this._subgroups) {
-      yield this._subgroups[subgroupNum];
-    }
+  async subgroups() {
+    return Object.keys(this._subgroup);
   }
 
   *players() {
