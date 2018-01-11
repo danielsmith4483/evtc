@@ -31,12 +31,12 @@
   },
   "homepage": "https://github.com/danielsmith4483/evtc#readme",
   "dependencies": {
+    "adm-zip": "^0.4.7",
     "babel-runtime": "^6.26.0",
-    "decompress": "^4.2.0",
     "gw2api-client": "^5.6.5",
+    "moment": "^2.20.1",
     "request": "^2.83.0",
-    "smart-buffer": "^4.0.1",
-    "moment": "^2.20.1"
+    "smart-buffer": "^4.0.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

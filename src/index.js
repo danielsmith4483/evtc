@@ -8,7 +8,7 @@ const CombatEventFactory = require("./combat-event/factory");
 
 const request = require("request").defaults({ encoding: null });
 
-import decompress from "decompress";
+const AdmZip = require('adm-zip');
 
 async function parse(buffer) {
   const logBuffer = SmarterBuffer.fromBuffer(buffer);
@@ -65,13 +65,10 @@ async function parse(buffer) {
 }
 
 async function fromZip(buffer) {
-  return decompress(buffer)
-    .then(async files => {
-      return files[0].data;
-    })
-    .catch(async err => {
-      console.log(err);
-    });
+  const zip = new AdmZip(buffer);
+  const zipEntries = zip.getEntries();
+
+  return zipEntries[0].getData();
 }
 
 export async function fromUrl(url) {
