@@ -1,30 +1,28 @@
 const Subgroup = require("./subgroup");
 
-module.exports = class Squad {
+import { mix, LazyAccessorMixin } from "mixin/lazy-accessor";
+
+module.exports = class Squad extends mix().with(LazyAccessorMixin) {
   constructor(players) {
-    this._subgroups = players.reduce((subgroups, player) => {
-      (subgroups[player.subgroup()] = subgroups[player.subgroup()] || []).push(
-        player
-      );
+    super(players);
 
-      return subgroups;
-    }, {});
-
-    Object.entries(this._subgroups).forEach(([subgroup, players]) => {
-      this._subgroups[subgroup] = new Subgroup(players);
-    });
+    this.players = players;
   }
 
   async subgroups() {
-    return Object.keys(this._subgroup);
-  }
+    return this.getAsync("subgroups", () => {
+      const subgroups = {};
 
-  *players() {
-    for (const subgroup of this.subgroups) {
-      for (const player of subgroup.players) {
-        yield player;
+      for (const player of this.players) {
+        const subgroupNumber = player.subgroup();
+        if (!(subgroupNumber in subgroups)) {
+          subgroups[subgroupNumber] = new Subgroup(subgroupNumber);
+        }
+        subgroups[subgroupNumber].addPlayer(player);
       }
-    }
+
+      return Object.values(subgroups);
+    }).then(subgroups => subgroups);
   }
 
   dps() {

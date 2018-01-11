@@ -1,17 +1,19 @@
-module.exports = class Squad {
-  constructor(player) {
-    this.players = [];
+module.exports = class Subgroup {
+  constructor(subgroupNumber) {
+    this._subgroupNumber = subgroupNumber;
 
-    if (player) {
-      this.addPlayer(player);
-    }
+    this.players = [];
   }
 
   addPlayer(player) {
     this.players.push(player);
   }
 
-  dps() {
-    return this.players.reduce((acc, cur) => acc + cur.dps() , 0);
+  subgroupNumber() {
+    return this._subgroupNumber;
   }
-}
+
+  dps() {
+    return this.players.reduce((acc, cur) => acc + cur.dps(), 0);
+  }
+};
