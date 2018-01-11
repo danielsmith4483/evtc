@@ -9,6 +9,7 @@ const CombatEventFactory = require("./combat-event/factory");
 const request = require("request").defaults({ encoding: null });
 
 import decompress from "decompress";
+import decompressUnzip from "decompress-unzip";
 
 async function parse(buffer) {
   const logBuffer = SmarterBuffer.fromBuffer(buffer);
@@ -65,7 +66,9 @@ async function parse(buffer) {
 }
 
 async function fromZip(buffer) {
-  return decompress(buffer)
+  return decompress(buffer, null, {
+    plugins: [decompressUnzip()]
+  })
     .then(async files => {
       return files[0].data;
     })
