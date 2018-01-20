@@ -78,9 +78,13 @@ async function fromZip(buffer) {
 }
 
 export async function fromUrl(url) {
-  return request.get(url, async (err, res, body) => {
-    fromZip(body).then(async buffer => {
-      return parse(buffer);
+  return new Promise(resolve => {
+    request.get(url, async (err, res, body) => {
+      resolve(
+        fromZip(body).then(async buffer => {
+          return parse(buffer);
+        })
+      );
     });
   });
 }
