@@ -1,6 +1,6 @@
 {
   "name": "evtc",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "An evtc parser for Guild Wars 2 logs.",
   "main": "lib/index.js",
   "scripts": {
@@ -8,14 +8,22 @@
     "build": "npm run lint && babel ./src -d ./lib",
     "prepare": "npm run build",
     "lint": "prettier-eslint '{**/*,*}.{js,json}' '!node_modules/**' '!lib/**'",
-    "test":
-      "cross-env NODE_PATH=src nyc mocha --require babel-core/register --require babel-polyfill --recursive"
+    "test": "cross-env NODE_PATH=src nyc mocha --require babel-core/register --require babel-polyfill --recursive"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/danielsmith4483/evtc.git"
   },
-  "keywords": ["evtc", "gw2", "log", "guild", "wars", "arc", "arcdps", "raids"],
+  "keywords": [
+    "evtc",
+    "gw2",
+    "log",
+    "guild",
+    "wars",
+    "arc",
+    "arcdps",
+    "raids"
+  ],
   "author": "Daniel Smith <danielsmith4483@gmail.com>",
   "license": "MIT",
   "bugs": {
@@ -57,6 +65,9 @@
     "prettier-eslint-cli": "^4.6.1"
   },
   "nyc": {
-    "reporter": ["lcov", "text"]
+    "reporter": [
+      "lcov",
+      "text"
+    ]
   }
 }
