@@ -1,5 +1,11 @@
 language: node_js
 node_js:
 - stable
-notifications:
-    webhooks: https://discordapp.com/api/webhooks/404198054946799619/rf4avMpq8F2h0h8cxWP1GTG7DKJmRs7ZIBjF45dT1dMPRp0bhlrWWTDhKDmSx-8bIxQ0
+after_success:
+  - wget https://raw.githubusercontent.com/k3rn31p4nic/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh success $WEBHOOK_URL
+after_failure:
+  - wget https://raw.githubusercontent.com/k3rn31p4nic/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh failure $WEBHOOK_URL
